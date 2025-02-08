@@ -155,11 +155,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Utils\Singleton.h" />
     <ClInclude Include="src\Game\Pong.h" />
     <ClInclude Include="src\Utils\Console.h" />
     <ClInclude Include="src\Utils\Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Utils\Singleton.cpp" />
     <ClCompile Include="src\Game\Pong.cpp" />
     <ClCompile Include="src\Utils\Console.cpp" />
     <ClCompile Include="src\Utils\Timer.cpp" />
