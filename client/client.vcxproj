@@ -203,6 +203,8 @@ exit /b 0</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="PongScene.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\client.cpp" />
     <ClCompile Include="src\PongDisplay.cpp" />
@@ -213,6 +215,8 @@ exit /b 0</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PongScene.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="src\App.h" />
     <ClInclude Include="src\PongDisplay.h" />
   </ItemGroup>

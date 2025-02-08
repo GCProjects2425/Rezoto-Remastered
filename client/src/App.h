@@ -4,6 +4,7 @@
 #include "Utils/Timer.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include "../PongScene.h"
 
 class App
 {
@@ -17,6 +18,8 @@ private:
 	void PollEvents();
 	void Update(float dt);
 	void Display();
+
+	Scene* CurrentScene;
 
 private:
 
