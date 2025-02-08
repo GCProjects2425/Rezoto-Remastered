@@ -1,8 +1,10 @@
 #include "UDPServer.h"
 
 #include "Utils/Console.h"
+#include "nlohmann/json.hpp"
 
 using namespace Console;
+using json = nlohmann::json;
 
 UDPServer::UDPServer()
 	: m_ServerSocket(INVALID_SOCKET)
