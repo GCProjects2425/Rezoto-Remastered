@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Party.cpp" />
     <ClCompile Include="src\GameServerGUI.cpp" />
     <ClCompile Include="src\server.cpp" />
     <ClCompile Include="src\UDPServer.cpp" />
@@ -165,6 +166,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Party.h" />
     <ClInclude Include="src\GameServerGUI.h" />
     <ClInclude Include="src\UDPServer.h" />
   </ItemGroup>

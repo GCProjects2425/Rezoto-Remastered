@@ -11,7 +11,7 @@ private:
 	PongDisplay m_PongDisplay;
 	sf::Font m_Font;
 	unsigned m_LeftScore, m_RightScore;
-
+	bool m_isRunning;
 public:
 	PongScene();
 

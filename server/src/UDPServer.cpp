@@ -57,3 +57,42 @@ void UDPServer::Launch()
 	m_isRunning = true;
 	Out << TextColors::FgGreen << ">>> UDP Server is running on "<< inet_ntoa(server.sin_addr) << ":" << ntohs(server.sin_port) << "!\n";
 }
+
+void UDPServer::HandleMessages()
+{
+	sockaddr_in client;
+	int addrLength = sizeof(client);
+	char buffer[1025];
+	int bytesReceived = recvfrom(m_ServerSocket, buffer, 1024, 0, (struct sockaddr*)&client, &addrLength);
+	if (bytesReceived == SOCKET_ERROR) {
+		int error = WSAGetLastError();
+		if (error != WSAEWOULDBLOCK) {
+			Out << TextColors::BgRed << ">>> recvfrom failed with error code: " + std::to_string(error) << "\n";
+		}
+		return;
+	}
+	buffer[bytesReceived] = '\0';
+
+	std::string clientId = inet_ntoa(client.sin_addr);
+
+	if (m_Players.find(clientId) == m_Players.end())
+	{
+		Player player(clientId, "Player" + std::to_string(m_Players.size()), ntohs(client.sin_port));
+		m_Players[clientId] = player;
+	}
+
+	json recvbufJson;
+	try {
+		recvbufJson = json::parse(std::string(buffer, bytesReceived));
+	}
+	catch (const json::parse_error& e) {
+		Out << TextColors::BgRed << ">>> JSON parse error: " << e.what() << "\n";
+		return;
+	}
+	ProcessMessage(clientId, recvbufJson);
+}
+
+void UDPServer::ProcessMessage(const std::string& clientID, json content)
+{
+	Out << TextColors::BgRed << ">>> Message received from " << clientID << ": " << content.dump() << "\n";
+}

@@ -4,7 +4,7 @@
 #include "Utils/Timer.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include "../PongScene.h"
+#include "PongScene.h"
 
 class App
 {

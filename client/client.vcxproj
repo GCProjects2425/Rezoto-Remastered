@@ -203,11 +203,12 @@ exit /b 0</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="PongScene.cpp" />
-    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="src\PongScene.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\client.cpp" />
     <ClCompile Include="src\PongDisplay.cpp" />
+    <ClCompile Include="src\UDPClient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\common\common.vcxproj">
@@ -215,10 +216,11 @@ exit /b 0</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PongScene.h" />
-    <ClInclude Include="Scene.h" />
+    <ClInclude Include="src\PongScene.h" />
+    <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\App.h" />
     <ClInclude Include="src\PongDisplay.h" />
+    <ClInclude Include="src\UDPClient.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -7,6 +7,12 @@ void PongScene::Draw(sf::RenderWindow& window)
 
 void PongScene::Update(float dt)
 {
+	if (!m_isRunning)
+	{
+		m_isRunning = true;
+		m_PongGame.Reset();
+	}
+
 	m_PongGame.Update(dt);
 	m_PongDisplay.Update(m_PongGame);
 
@@ -111,5 +117,6 @@ PongScene::PongScene()
 	m_PongGame(), 
 	m_PongDisplay(m_Font)
 	, m_LeftScore(0), m_RightScore(0)
+	, m_isRunning(false)
 {
 }

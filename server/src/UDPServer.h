@@ -1,10 +1,13 @@
 #pragma once
 #include "Utils/Singleton.h"
+#include <unordered_map>
+#include <nlohmann/json.hpp>
 
 #include <WinSock2.h>
-
 #pragma comment(lib,"ws2_32.lib")
 #pragma warning(disable:4996) 
+
+#include "Party.h"
 
 #define PORT 8888
 
@@ -21,8 +24,12 @@ private:
 	void Init();
 	void Launch();
 
-	SOCKET m_ServerSocket;
+	void HandleMessages();
+	void ProcessMessage(const std::string& clientID, nlohmann::json content);
 
+	SOCKET m_ServerSocket;
+	std::unordered_map<std::string, Party> m_Parties;
+	std::unordered_map<std::string, Player> m_Players;
 	bool m_isRunning;
 };
 
