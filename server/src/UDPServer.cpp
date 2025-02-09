@@ -190,22 +190,22 @@ void UDPServer::ProcessMessage(const std::string& clientID, json content)
 		{
 			if (paddle == "UP")
 			{
-				m_PongGame.Behaviours &= PaddlesBehaviour::LeftUp;
+				m_PongGame.Behaviours &= ~PaddlesBehaviour::LeftUp;
 			}
 			else if (paddle == "DOWN")
 			{
-				m_PongGame.Behaviours &= PaddlesBehaviour::LeftDown;
+				m_PongGame.Behaviours &= ~PaddlesBehaviour::LeftDown;
 			}
 		}
 		else if (m_Paddles[1] == clientID)
 		{
 			if (paddle == "UP")
 			{
-				m_PongGame.Behaviours &= PaddlesBehaviour::RightUp;
+				m_PongGame.Behaviours &= ~PaddlesBehaviour::RightUp;
 			}
 			else if (paddle == "DOWN")
 			{
-				m_PongGame.Behaviours &= PaddlesBehaviour::RightDown;
+				m_PongGame.Behaviours &= ~PaddlesBehaviour::RightDown;
 			}
 		}
 		break;
