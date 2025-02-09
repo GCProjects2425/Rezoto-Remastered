@@ -3,6 +3,7 @@
 #include "Utils/Console.h"
 #include "nlohmann/json.hpp"
 #include <Game/Enums.h>
+#include <Utils/Timer.h>
 
 using namespace Console;
 using json = nlohmann::json;
@@ -10,15 +11,25 @@ using json = nlohmann::json;
 UDPServer::UDPServer()
 	: m_ServerSocket(INVALID_SOCKET)
 	, m_isRunning(false)
+	, m_isGameRunning(false)
 {
 	Init();
 }
 
 void UDPServer::Run()
 {
+	Timer dtTimer;
 	while (m_isRunning)
 	{
 		HandleMessages();
+		float dt = dtTimer.GetElapsedSeconds();
+		dtTimer.Restart();
+
+		if (m_isGameRunning)
+		{
+			m_PongGame.Update(dt);
+			SendGameUpdate();
+		}
 	}
 }
 
@@ -60,6 +71,23 @@ void UDPServer::Launch()
 
 	m_isRunning = true;
 	Out << TextColors::FgGreen << ">>> UDP Server is running on "<< inet_ntoa(server.sin_addr) << ":" << ntohs(server.sin_port) << "!\n";
+}
+
+void UDPServer::StartGame()
+{
+	json resp = {
+		{"type", MessageType::MessageType_Start},
+		{"data", {
+			{"left", m_Players.begin()->second.username},
+			{"right", std::next(m_Players.begin())->second.username}
+		}}
+	};
+	m_PongGame.Reset();
+	m_isGameRunning = true;
+	for (auto& player : m_Players)
+	{
+		SendMsg(player.first, resp.dump());
+	}
 }
 
 void UDPServer::HandleMessages()
@@ -130,6 +158,29 @@ void UDPServer::OnPlayerConnect(const std::string& clientID, const std::string& 
 		{"type", MessageType::MessageType_Connected}
 	};
 	SendMsg(clientID, resp.dump());
+	if (m_Players.size() == 2)
+	{
+		StartGame();
+	}
+}
+
+void UDPServer::SendGameUpdate()
+{
+	json resp = {
+		{"type", MessageType::MessageType_Update},
+		{"data", {
+			{"ball", {
+				{"x", m_PongGame.BallX},
+				{"y", m_PongGame.BallY}
+			}},
+			{"leftPaddle", m_PongGame.LeftPaddle},
+			{"rightPaddle", m_PongGame.RightPaddle}
+		}}
+	};
+	for (auto& player : m_Players)
+	{
+		SendMsg(player.first, resp.dump());
+	}
 }
 
 void UDPServer::SendMsg(const std::string& clientID, const std::string& message)
