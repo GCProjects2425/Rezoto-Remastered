@@ -74,7 +74,7 @@ bool UDPClient::SendMsg(const std::string& message)
 	if (!m_isConnected)
 		return false;
 	const char* msg = message.c_str();
-	int bytesSent = send(m_ClientSocket, msg, strlen(msg), 0, (sockaddr*)&m_ServerAddr, sizeof(sockaddr_in));
+	int bytesSent = sendto(m_ClientSocket, msg, strlen(msg), 0, (sockaddr*)&m_ServerAddr, sizeof(sockaddr_in));
 	if (bytesSent == SOCKET_ERROR)
 	{
 		std::string message = "Error on send: " + std::to_string(WSAGetLastError());
