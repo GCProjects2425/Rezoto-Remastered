@@ -301,5 +301,6 @@ void UDPServer::CheckScore()
 	}
 	default: return;
 	}
+	SendScore();
 	m_PongGame.Reset();
 }
