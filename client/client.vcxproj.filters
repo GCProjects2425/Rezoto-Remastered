@@ -57,4 +57,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="res\rick-roll-lofi.ogg" />
+  </ItemGroup>
 </Project>

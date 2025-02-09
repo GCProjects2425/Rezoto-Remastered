@@ -6,7 +6,7 @@
 App::App()
 	: m_Window(sf::VideoMode{sf::Vector2u(sf::Vector2{GameSizeX, GameSizeY})}, "Pong")
 	, m_Font("res/fonts/JuliaMono-Regular.ttf")
-	, m_Music("res/Su Turno.ogg")
+	, m_Music("res/rick-roll-lofi.ogg")
 	, m_PongGame()
 	, m_PongDisplay(m_Font)
 	, m_LeftScore(0), m_RightScore(0)
@@ -15,6 +15,8 @@ App::App()
 {
 	m_Window.setFramerateLimit(60);
 	m_Music.setLooping(true);
+	m_Music.setVolume(50.f);
+	m_Music.setPitch(2.f); // LOL
 	m_Music.play();
 
 	m_ClientServer = std::make_unique<UDPClient>();

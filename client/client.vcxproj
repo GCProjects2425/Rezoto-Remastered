@@ -224,6 +224,9 @@ exit /b 0</Command>
     <ClInclude Include="src\PongDisplay.h" />
     <ClInclude Include="src\UDPClient.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="res\rick-roll-lofi.ogg" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
