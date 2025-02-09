@@ -150,6 +150,11 @@ void JoinRoomScene::ChangeConnectionStatus(ConnectionStatus status)
     }
 }
 
+void JoinRoomScene::OnStartMessage()
+{
+    App::GetInstance()->SetScene(App::GetInstance()->pongScene);
+}
+
 void JoinRoomScene::OnConnectionMessage()
 {
     	ChangeConnectionStatus(WaitingForPlayer);

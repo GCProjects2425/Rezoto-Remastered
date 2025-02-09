@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <nlohmann/json.hpp>
 
 struct Pong;
 
@@ -10,7 +11,7 @@ public:
 	PongDisplay(sf::Font&);
 
 	void SetScore(unsigned left, unsigned right);
-	void Update(const Pong& pong);
+	void Update(nlohmann::json data);
 	void Draw(sf::RenderTarget& target) const;
 
 private:

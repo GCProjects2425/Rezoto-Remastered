@@ -1,6 +1,8 @@
 #include "Pong.h"
 #include <numbers>
 #include <random>
+#include "Enums.h"
+#include <nlohmann/json.hpp>
 
 inline constexpr float BallStartMaxAngle = std::numbers::pi_v<float> / 5.f;
 inline constexpr float BallBounceMaxAngle = std::numbers::pi_v<float> / 4.f;
@@ -123,6 +125,18 @@ void Pong::Update(float dt)
 			BallY += normY * penetrationDepth;
 
 			//Send ballBounceMessage (BallDx, BallDy)
+			//nlohmann::json msg = {
+			//				{"type", MessageType::MessageType_BallBounce},
+			//				{"data", {
+			//					{"ballDx", BallDx },
+			//					{"ballDy", BallDy },
+
+			//					{"ballx", BallX },
+			//					{"bally", BallY }
+			//				}}
+			//};
+			//UdpS
+			//UDPClient::GetInstance()->SendMsg(msg.dump());
 		}
 	}
 }
@@ -136,4 +150,8 @@ GameState Pong::GetGameState() const
 		return GameState::LeftWins;
 
 	return GameState::Ongoing;
+}
+
+void Pong::OnCollision()
+{
 }

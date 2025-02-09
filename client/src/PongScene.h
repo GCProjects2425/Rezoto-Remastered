@@ -20,5 +20,7 @@ public:
 	void Update(float dt)override;
 	void Start() override;
 	void HandleInput(sf::RenderWindow& window) override;
+
+	void OnUpdateMessage(nlohmann::json data);
 };
 

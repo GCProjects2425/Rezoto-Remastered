@@ -39,5 +39,6 @@ public:
 
     void SwapField();
     void ChangeConnectionStatus(ConnectionStatus status);
+    void OnStartMessage();
     void OnConnectionMessage();
 };

@@ -92,6 +92,12 @@ void App::ProcessMessages()
 		case MessageType::MessageType_Connected:
 			joinRoomScene->OnConnectionMessage();
 			break;
+		case MessageType::MessageType_Update:
+			pongScene->OnUpdateMessage(msg["data"]);
+			break;
+		case MessageType::MessageType_Start:
+			joinRoomScene->OnStartMessage();
+			break;
 		default:
 			break;
 		}

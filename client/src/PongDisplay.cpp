@@ -18,11 +18,11 @@ void PongDisplay::SetScore(unsigned left, unsigned right)
 	m_ScoreText.setOrigin(m_ScoreText.getLocalBounds().getCenter());
 }
 
-void PongDisplay::Update(const Pong& pong)
+void PongDisplay::Update(nlohmann::json data)
 {
-	m_Ball.setPosition({pong.BallX, pong.BallY});
-	m_LeftPaddle.setPosition({0.f, pong.LeftPaddle});
-	m_RightPaddle.setPosition({GameSizeX - PaddleDistFromBorders, pong.RightPaddle});
+	m_Ball.setPosition({ data["ball"]["x"],data["ball"]["y"] });
+	m_LeftPaddle.setPosition({0.f,data["paddleLeft"]});
+	m_RightPaddle.setPosition({GameSizeX - PaddleDistFromBorders, data["rightPaddle"] });
 }
 
 void PongDisplay::Draw(sf::RenderTarget& target) const

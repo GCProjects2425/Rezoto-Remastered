@@ -28,6 +28,8 @@ struct Pong
 	void Reset();
 	void Update(float dt);
 	GameState GetGameState() const;
+	void OnCollision();
+	void OnCollisionMessage();
 
 	float BallX, BallY;
 	float BallDx, BallDy;
