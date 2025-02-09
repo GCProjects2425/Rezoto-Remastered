@@ -142,7 +142,7 @@ void PongScene::OnUpdateMessage(nlohmann::json data)
 
 void PongScene::OnScoreMessage(nlohmann::json data)
 {
-	m_PongDisplay.SetScore(data["left"], data["left"]);
+	m_PongDisplay.SetScore(data["left"], data["right"]);
 }
 
 

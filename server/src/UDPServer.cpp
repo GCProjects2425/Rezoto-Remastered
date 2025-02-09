@@ -97,6 +97,7 @@ void UDPServer::StartGame()
 		}}
 	};
 	m_PongGame.Reset();
+	SendScore();
 	m_isGameRunning = true;
 	for (auto& player : m_Players)
 	{
@@ -300,6 +301,5 @@ void UDPServer::CheckScore()
 	}
 	default: return;
 	}
-
 	m_PongGame.Reset();
 }
