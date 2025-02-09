@@ -6,7 +6,8 @@ JoinRoomScene::JoinRoomScene()
     m_UsernameInput(m_Font, "", 50u),
     m_IpInput(m_Font, "", 50u),
     m_ErrorMessage(m_Font, "", 50u),
-    m_Font("./res/fonts/JuliaMono-Regular.ttf") 
+    m_Font("./res/fonts/JuliaMono-Regular.ttf") ,
+    m_ConnectionStatus(m_Font,"",50u)
 {
 
     m_UsernameLabel.setFont(m_Font);
@@ -31,6 +32,11 @@ JoinRoomScene::JoinRoomScene()
     m_ErrorMessage.setPosition(sf::Vector2f(50, 250));
     m_ErrorMessage.setCharacterSize(24);
     m_ErrorMessage.setFillColor(sf::Color::Red);
+
+    m_ConnectionStatus.setFont(m_Font);
+    m_ConnectionStatus.setPosition(sf::Vector2f(50, 350));
+    m_ConnectionStatus.setCharacterSize(24);
+    m_ConnectionStatus.setFillColor(sf::Color::Green);
 }
 
 void JoinRoomScene::Draw(sf::RenderWindow& window) 
@@ -40,6 +46,7 @@ void JoinRoomScene::Draw(sf::RenderWindow& window)
     window.draw(m_IpLabel);
     window.draw(m_IpInput);
     window.draw(m_ErrorMessage);
+    window.draw(m_ConnectionStatus);
 }
 
 void JoinRoomScene::Start() 
@@ -81,8 +88,9 @@ void JoinRoomScene::HandleInput(sf::RenderWindow& window)
                     m_ErrorMessage.setString("Invalid IP address");
                 }
                 else {
-                    m_ErrorMessage.setString("Connecting...");
-                    App::GetInstance()->SetScene(App::GetInstance()->pongScene);
+                    //m_ErrorMessage.setString("Connecting...");
+                    //App::GetInstance()->SetScene(App::GetInstance()->pongScene);
+                    ChangeConnectionStatus(Connecting);
                 }
             }
         }
@@ -99,5 +107,22 @@ void JoinRoomScene::SwapField()
     else {
         m_UsernameLabel.setFillColor(sf::Color::Color(58, 58, 58));
         m_IpLabel.setFillColor(sf::Color::White);
+    }
+}
+
+void JoinRoomScene::ChangeConnectionStatus(ConnectionStatus status)
+{
+    switch (status)
+    {
+    case Connecting:
+        m_ConnectionStatus.setFillColor(sf::Color::Color(152, 251, 152));
+        m_ConnectionStatus.setString("Connecting to the server ...");
+        break;
+    case WaitingForPlayer:
+        m_ConnectionStatus.setFillColor(sf::Color::Color(32, 178, 170));
+        m_ConnectionStatus.setString("Waiting for player to join ...");
+        break;
+    default:
+        break;
     }
 }

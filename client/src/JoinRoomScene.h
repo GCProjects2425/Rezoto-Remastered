@@ -4,12 +4,16 @@
 #include <regex>
 #include <iostream>
 #include "App.h"
-
+enum ConnectionStatus {
+    Connecting,
+    WaitingForPlayer
+};
 class JoinRoomScene : public Scene {
 private:
     sf::Font m_Font;
     sf::Text m_UsernameLabel, m_IpLabel;
     sf::Text m_UsernameInput, m_IpInput, m_ErrorMessage;
+    sf::Text m_ConnectionStatus;
     std::string m_Username, m_Ip;
     bool m_IsTypingUsername = true;
 
@@ -32,4 +36,5 @@ public:
     void HandleInput(sf::RenderWindow& window) override;
 
     void SwapField();
+    void ChangeConnectionStatus(ConnectionStatus status);
 };
