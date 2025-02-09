@@ -203,6 +203,7 @@ exit /b 0</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\JoinRoomScene.cpp" />
     <ClCompile Include="src\PongScene.cpp" />
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\App.cpp" />
@@ -216,6 +217,7 @@ exit /b 0</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\JoinRoomScene.h" />
     <ClInclude Include="src\PongScene.h" />
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\App.h" />

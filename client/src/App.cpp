@@ -1,5 +1,6 @@
 #include "App.h"
 #include <cstdlib>
+#include "JoinRoomScene.h"
 
 
 App::App()
@@ -19,7 +20,12 @@ int App::Run()
 	{
 		return EXIT_FAILURE;
 	}
-	CurrentScene = new PongScene;
+
+	joinRoomScene = new JoinRoomScene();
+	pongScene = new PongScene();
+
+	SetScene(joinRoomScene);
+
 	Timer dtTimer;
 	do
 	{
@@ -52,4 +58,13 @@ void App::Display()
 	m_Window.clear();
 	CurrentScene->Draw(m_Window);
 	m_Window.display();
+}
+
+void App::SetScene(Scene* newScene)
+{
+	if (newScene == CurrentScene)
+		return;
+
+	CurrentScene = newScene;
+	CurrentScene->Start();
 }

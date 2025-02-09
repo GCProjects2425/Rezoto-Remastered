@@ -5,13 +5,20 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "PongScene.h"
+#include "Utils/Singleton.h"
 
-class App
+class JoinRoomScene;
+class App : public Singleton<App>
 {
 public:
 
 	App();
 	int Run();
+
+	void SetScene (Scene* newScene);
+	PongScene* pongScene;
+	JoinRoomScene* joinRoomScene;
+
 
 private:
 
@@ -20,6 +27,7 @@ private:
 	void Display();
 
 	Scene* CurrentScene;
+
 
 private:
 

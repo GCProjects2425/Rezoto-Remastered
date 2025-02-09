@@ -12,7 +12,7 @@ void UDPClient::Init()
     WSADATA wsaData;
     int result = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (result != 0) {
-        return false;
+        return;
     }
-    _isInitialized = true;
+    //_isInitialized = true;
 }
