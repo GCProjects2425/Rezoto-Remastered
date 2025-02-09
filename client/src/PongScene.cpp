@@ -39,6 +39,7 @@ void PongScene::Update(float dt)
 
 void PongScene::Start()
 {
+	m_PongDisplay.SetUsernames(m_LeftPlayer, m_RightPlayer);
 }
 
 void PongScene::HandleInput(sf::RenderWindow& window)
