@@ -75,11 +75,13 @@ void UDPServer::Launch()
 
 void UDPServer::StartGame()
 {
+	m_Paddles[0] = m_Players.begin()->first;
+	m_Paddles[1] = std::next(m_Players.begin())->first;
 	json resp = {
 		{"type", MessageType::MessageType_Start},
 		{"data", {
-			{"left", m_Players.begin()->second.username},
-			{"right", std::next(m_Players.begin())->second.username}
+			{"left", m_Players[m_Paddles[0]].username},
+			{"right", m_Players[m_Paddles[1]].username}
 		}}
 	};
 	m_PongGame.Reset();
@@ -143,6 +145,33 @@ void UDPServer::ProcessMessage(const std::string& clientID, json content)
 		std::string username = content["data"]["username"];
 		OnPlayerConnect(clientID, username);
 		Out << TextColors::FgGreen << ">>> " << clientID << " connected with username: " << username << "\n";
+		break;
+	}
+	case MessageType::MessageType_StartMovingPaddle:
+	{
+		std::string paddle = content["data"]["Paddle"];
+		if (m_Paddles[0] == clientID)
+		{
+			if (paddle == "UP")
+			{
+				m_PongGame.Behaviours |= PaddlesBehaviour::LeftUp;
+			}
+			else if (paddle == "DOWN")
+			{
+				m_PongGame.Behaviours |= PaddlesBehaviour::LeftDown;
+			}
+		}
+		else if (m_Paddles[1] == clientID)
+		{
+			if (paddle == "UP")
+			{
+				m_PongGame.Behaviours |= PaddlesBehaviour::RightUp;
+			}
+			else if (paddle == "DOWN")
+			{
+				m_PongGame.Behaviours |= PaddlesBehaviour::RightDown;
+			}
+		}
 		break;
 	}
 	default:

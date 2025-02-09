@@ -41,6 +41,7 @@ private:
 	std::unordered_map<std::string, Player> m_Players;
 	std::string m_LeftPlayer, m_RightPlayer;
 	Pong m_PongGame;
+	std::string m_Paddles[2];
 	bool m_isRunning;
 	bool m_isGameRunning;
 };

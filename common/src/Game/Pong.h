@@ -1,4 +1,5 @@
 #pragma once
+#include <type_traits>
 
 inline constexpr float GameSizeX = 1600.f;
 inline constexpr float GameSizeY = 900.f;
@@ -22,6 +23,24 @@ enum class PaddlesBehaviour
 	RightUp = 1 << 2,
 	RightDown = 1 << 3,
 };
+
+static PaddlesBehaviour operator|=(PaddlesBehaviour& lhs, PaddlesBehaviour rhs)
+{
+	using UType = std::underlying_type_t<PaddlesBehaviour>;
+	return lhs = static_cast<PaddlesBehaviour>(static_cast<UType>(lhs) | static_cast<UType>(rhs));
+}
+
+static PaddlesBehaviour operator&=(PaddlesBehaviour& lhs, PaddlesBehaviour rhs)
+{
+	using UType = std::underlying_type_t<PaddlesBehaviour>;
+	return lhs = static_cast<PaddlesBehaviour>(static_cast<UType>(lhs) & static_cast<UType>(rhs));
+}
+
+static PaddlesBehaviour operator~(PaddlesBehaviour rhs)
+{
+	using UType = std::underlying_type_t<PaddlesBehaviour>;
+	return static_cast<PaddlesBehaviour>(~static_cast<UType>(rhs));
+}
 
 struct Pong
 {

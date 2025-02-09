@@ -41,24 +41,6 @@ void PongScene::Start()
 {
 }
 
-static PaddlesBehaviour operator|=(PaddlesBehaviour& lhs, PaddlesBehaviour rhs)
-{
-	using UType = std::underlying_type_t<PaddlesBehaviour>;
-	return lhs = static_cast<PaddlesBehaviour>(static_cast<UType>(lhs) | static_cast<UType>(rhs));
-}
-
-static PaddlesBehaviour operator&=(PaddlesBehaviour& lhs, PaddlesBehaviour rhs)
-{
-	using UType = std::underlying_type_t<PaddlesBehaviour>;
-	return lhs = static_cast<PaddlesBehaviour>(static_cast<UType>(lhs) & static_cast<UType>(rhs));
-}
-
-static PaddlesBehaviour operator~(PaddlesBehaviour rhs)
-{
-	using UType = std::underlying_type_t<PaddlesBehaviour>;
-	return static_cast<PaddlesBehaviour>(~static_cast<UType>(rhs));
-}
-
 void PongScene::HandleInput(sf::RenderWindow& window)
 {
 	while (const std::optional event = window.pollEvent())
@@ -69,64 +51,63 @@ void PongScene::HandleInput(sf::RenderWindow& window)
 		if (auto* keyEvent = event->getIf<sf::Event::KeyPressed>())
 		{
 			using enum sf::Keyboard::Key;
-			using enum PaddlesBehaviour;
+			//using enum PaddlesBehaviour;
 			switch (keyEvent->code)
 			{
-			case W:
-			case Z:
-			case Up:
-			{
-				nlohmann::json msg = {
-					{"type", MessageType::MessageType_StartMovingPaddle},
-					{"data", { {"Paddle", "UP"}}}
-				};
-				UDPClient::GetInstance()->SendMsg(msg.dump());
-				break;
-			}
-			case Down:
-			case S:
-			{
-				nlohmann::json msg = {
-					{"type", MessageType::MessageType_StartMovingPaddle},
-					{"data", { {"Paddle", "DOWN"}}}
-				};
-				UDPClient::GetInstance()->SendMsg(msg.dump());
-				break;
-			}
+				case W:
+				case Z:
+				case Up:
+				{
+					nlohmann::json msg = {
+						{"type", MessageType::MessageType_StartMovingPaddle},
+						{"data", { {"Paddle", "UP"}}}
+					};
+					UDPClient::GetInstance()->SendMsg(msg.dump());
+					break;
+				}
+				case Down:
+				case S:
+				{
+					nlohmann::json msg = {
+						{"type", MessageType::MessageType_StartMovingPaddle},
+						{"data", { {"Paddle", "DOWN"}}}
+					};
+					UDPClient::GetInstance()->SendMsg(msg.dump());
+					break;
+				}
 			}
 		}
 
 		if (auto* keyEvent = event->getIf<sf::Event::KeyReleased>())
 		{
 			using enum sf::Keyboard::Key;
-			using enum PaddlesBehaviour;
+			//using enum PaddlesBehaviour;
 			switch (keyEvent->code)
 			{
-			case W:
-			case Z:
-			case Up:
-			{
-				nlohmann::json msg = {
-					{"type", MessageType::MessageType_StopMovingPaddle},
-					{"data", { {"Paddle", "UP"}}}
-				};
-				UDPClient::GetInstance()->SendMsg(msg.dump());
-				break;
-			}
-			case Down:
-			case S:
-			{
-				nlohmann::json msg = {
-					{"type", MessageType::MessageType_StopMovingPaddle},
-					{"data", { {"Paddle", "DOWN"}}}
-				};
-				UDPClient::GetInstance()->SendMsg(msg.dump());
-				break;
-			}
+				case W:
+				case Z:
+				case Up:
+				{
+					nlohmann::json msg = {
+						{"type", MessageType::MessageType_StopMovingPaddle},
+						{"data", { {"Paddle", "UP"}}}
+					};
+					UDPClient::GetInstance()->SendMsg(msg.dump());
+					break;
+				}
+				case Down:
+				case S:
+				{
+					nlohmann::json msg = {
+						{"type", MessageType::MessageType_StopMovingPaddle},
+						{"data", { {"Paddle", "DOWN"}}}
+					};
+					UDPClient::GetInstance()->SendMsg(msg.dump());
+					break;
+				}
 			}
 		}
 	}
-
 }
 
 void PongScene::OnUpdateMessage(nlohmann::json data)

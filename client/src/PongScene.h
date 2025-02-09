@@ -1,7 +1,7 @@
 #pragma once
+#include "Game/Pong.h"
 #include "Scene.h"
 #include "PongDisplay.h"
-#include "Game/Pong.h"
 #include "UDPClient.h"
 class PongScene :
 	public Scene
