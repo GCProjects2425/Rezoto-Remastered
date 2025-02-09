@@ -100,6 +100,7 @@ void App::ProcessMessages()
 			joinRoomScene->OnStartMessage();
 			pongScene->SetLeftPlayer(msg["data"]["left"]);
 			pongScene->SetRightPlayer(msg["data"]["right"]);
+			pongScene->Start();
 		}
 			break;
 		case MessageType::MessageType_UpdateScore:
