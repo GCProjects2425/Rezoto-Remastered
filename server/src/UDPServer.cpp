@@ -1,5 +1,6 @@
 #include "UDPServer.h"
-
+#include <chrono>
+#include <thread>
 #include "Utils/Console.h"
 #include "nlohmann/json.hpp"
 #include <Game/Enums.h>
@@ -19,17 +20,25 @@ UDPServer::UDPServer()
 void UDPServer::Run()
 {
 	Timer dtTimer;
+	auto lastFrameTime = std::chrono::high_resolution_clock::now();
 	while (m_isRunning)
 	{
 		HandleMessages();
 		float dt = dtTimer.GetElapsedSeconds();
 		dtTimer.Restart();
 
-		if (m_isGameRunning)
+		auto now = std::chrono::high_resolution_clock::now();
+		double elapsed = std::chrono::duration<double>(now - lastFrameTime).count();
+		if (elapsed >= (1.f / 60.f))
 		{
-			m_PongGame.Update(dt);
-			SendGameUpdate();
+			if (m_isGameRunning)
+			{
+				m_PongGame.Update(dt);
+				SendGameUpdate();
+			}
+			lastFrameTime = now;
 		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 }
 
