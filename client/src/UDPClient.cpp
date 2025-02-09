@@ -28,6 +28,9 @@ bool UDPClient::Connect(const std::string& ip, const std::string& pseudo)
 		return false;
 	}
 
+	u_long mode = 1;  // 1 = non-bloquant, 0 = bloquant
+	ioctlsocket(m_ClientSocket, FIONBIO, &mode);
+
 	m_ServerAddr.sin_family = AF_INET;
 	m_ServerAddr.sin_port = htons(SERVER_PORT);
 	m_ServerAddr.sin_addr.s_addr = inet_addr(ip.c_str());
@@ -45,7 +48,7 @@ bool UDPClient::Connect(const std::string& ip, const std::string& pseudo)
 	return true;
 }
 
-const std::string& UDPClient::ReceiveMessage()
+std::string UDPClient::ReceiveMessage()
 {
 	if (!m_isConnected)
 		return "";

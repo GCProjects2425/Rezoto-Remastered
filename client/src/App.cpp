@@ -90,7 +90,7 @@ void App::ProcessMessages()
 		switch (type)
 		{
 		case MessageType::MessageType_Connected:
-			joinRoomScene->ChangeConnectionStatus(ConnectionStatus::WaitingForPlayer);
+			joinRoomScene->OnConnectionMessage();
 			break;
 		default:
 			break;

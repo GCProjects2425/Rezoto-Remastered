@@ -95,18 +95,22 @@ void JoinRoomScene::HandleInput(sf::RenderWindow& window)
                 else {
                     //m_ErrorMessage.setString("Connecting...");
                     //App::GetInstance()->SetScene(App::GetInstance()->pongScene);
-                    ChangeConnectionStatus(Connecting);
-                        json msg = {
-                            {"type", MessageType::MessageType_Connect},
-                            {"data", {
+                    if (UDPClient::GetInstance()->Connect(m_Ip, m_Username))
+                    {
+						ChangeConnectionStatus(Connecting);
+						json msg = {
+							{"type", MessageType::MessageType_Connect},
+							{"data", {
 								{"username", m_Username }
-                            }}
-                        };/*
-                        m_ErrorMessage.setString("Error while connecting");
-                        ChangeConnectionStatus(None);*/
+							}}
+						};
 						UDPClient::GetInstance()->SendMsg(msg.dump());
-                    
-                    
+					}
+                    else
+                    {
+                        m_ErrorMessage.setString("Error while connecting");
+                        ChangeConnectionStatus(None);
+                    }
                 }
             }
         }

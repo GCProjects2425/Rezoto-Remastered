@@ -18,7 +18,7 @@ void UDPServer::Run()
 {
 	while (m_isRunning)
 	{
-		
+		HandleMessages();
 	}
 }
 
@@ -55,6 +55,9 @@ void UDPServer::Launch()
 	u_long mode = 1;
 	ioctlsocket(m_ServerSocket, FIONBIO, &mode);
 
+	int enable = 1;
+	setsockopt(m_ServerSocket, SOL_SOCKET, SO_REUSEADDR, (const char*)&enable, sizeof(enable));
+
 	m_isRunning = true;
 	Out << TextColors::FgGreen << ">>> UDP Server is running on "<< inet_ntoa(server.sin_addr) << ":" << ntohs(server.sin_port) << "!\n";
 }
@@ -81,6 +84,12 @@ void UDPServer::HandleMessages()
 		Player player(clientId, "Player" + std::to_string(m_Players.size()), ntohs(client.sin_port));
 		m_Players[clientId] = player;
 	}
+	else
+	{
+		Player& player = m_Players[clientId];
+		if (player.port != ntohs(client.sin_port))
+			player.port = ntohs(client.sin_port);
+	}
 
 	json recvbufJson;
 	try 
@@ -97,7 +106,7 @@ void UDPServer::HandleMessages()
 
 void UDPServer::ProcessMessage(const std::string& clientID, json content)
 {
-	Out << TextColors::BgRed << ">>> Message received from " << clientID << ": " << content.dump() << "\n";
+	Out << TextColors::FgCyan << ">>> Message received from " << clientID << ": " << content.dump() << "\n";
 
 	switch ((MessageType)content["type"])
 	{
@@ -120,6 +129,7 @@ void UDPServer::OnPlayerConnect(const std::string& clientID, const std::string& 
 	json resp = {
 		{"type", MessageType::MessageType_Connected}
 	};
+	SendMsg(clientID, resp.dump());
 }
 
 void UDPServer::SendMsg(const std::string& clientID, const std::string& message)
