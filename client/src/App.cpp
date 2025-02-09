@@ -96,7 +96,11 @@ void App::ProcessMessages()
 			pongScene->OnUpdateMessage(msg["data"]);
 			break;
 		case MessageType::MessageType_Start:
+		{
 			joinRoomScene->OnStartMessage();
+			pongScene->SetLeftPlayer(msg["data"]["left"]);
+			pongScene->SetRightPlayer(msg["data"]["right"]);
+		}
 			break;
 		case MessageType::MessageType_UpdateScore:
 			pongScene->OnScoreMessage(msg["data"]);
