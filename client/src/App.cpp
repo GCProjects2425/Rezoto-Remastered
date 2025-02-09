@@ -2,6 +2,10 @@
 #include <cstdlib>
 #include "JoinRoomScene.h"
 
+#include <nlohmann/json.hpp>
+#include <Game/Enums.h>
+
+using json = nlohmann::json;
 
 App::App()
 	: m_Window(sf::VideoMode{sf::Vector2u(sf::Vector2{GameSizeX, GameSizeY})}, "Pong")
@@ -15,11 +19,11 @@ App::App()
 {
 	m_Window.setFramerateLimit(60);
 	m_Music.setLooping(true);
-	m_Music.setVolume(0.5f);
+	m_Music.setVolume(25.f);
 	m_Music.setPitch(2.f); // LOL
 	m_Music.play();
 
-	m_ClientServer = std::make_unique<UDPClient>();
+	m_ClientServer = UDPClient::GetInstance();
 }
 
 int App::Run()
@@ -59,6 +63,7 @@ void App::PollEvents()
 void App::Update(float dt)
 {
 	CurrentScene->Update(dt);
+	ProcessMessages();
 }
 
 void App::Display()
@@ -66,6 +71,32 @@ void App::Display()
 	m_Window.clear();
 	CurrentScene->Draw(m_Window);
 	m_Window.display();
+}
+
+void App::ProcessMessages()
+{
+	std::string message = m_ClientServer->ReceiveMessage();
+	if (message.empty())
+		return;
+
+	try
+	{
+		json msg = json::parse(message);
+		MessageType type = (MessageType)msg["type"];
+
+		switch (type)
+		{
+		case MessageType::MessageType_Connected:
+			joinRoomScene->ChangeConnectionStatus(ConnectionStatus::WaitingForPlayer);
+			break;
+		default:
+			break;
+		}
+	}
+	catch (const json::exception& e)
+	{
+		return;
+	}
 }
 
 void App::SetScene(Scene* newScene)

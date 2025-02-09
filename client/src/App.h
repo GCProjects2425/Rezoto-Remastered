@@ -27,6 +27,8 @@ private:
 	void Update(float dt);
 	void Display();
 
+	void ProcessMessages();
+
 	Scene* CurrentScene;
 
 	sf::RenderWindow m_Window;
@@ -39,5 +41,5 @@ private:
 
 	Timer m_Timer;
 
-	std::unique_ptr<UDPClient> m_ClientServer;
+	UDPClient* m_ClientServer;
 };

@@ -2,6 +2,7 @@
 
 #include "Utils/Console.h"
 #include "nlohmann/json.hpp"
+#include <Game/Enums.h>
 
 using namespace Console;
 using json = nlohmann::json;
@@ -82,10 +83,12 @@ void UDPServer::HandleMessages()
 	}
 
 	json recvbufJson;
-	try {
+	try 
+	{
 		recvbufJson = json::parse(std::string(buffer, bytesReceived+1));
 	}
-	catch (const json::parse_error& e) {
+	catch (const json::parse_error& e) 
+	{
 		Out << TextColors::BgRed << ">>> JSON parse error: " << e.what() << "\n";
 		return;
 	}
@@ -95,4 +98,44 @@ void UDPServer::HandleMessages()
 void UDPServer::ProcessMessage(const std::string& clientID, json content)
 {
 	Out << TextColors::BgRed << ">>> Message received from " << clientID << ": " << content.dump() << "\n";
+
+	switch ((MessageType)content["type"])
+	{
+	case MessageType::MessageType_Connect:
+	{
+		std::string username = content["data"]["username"];
+		OnPlayerConnect(clientID, username);
+		Out << TextColors::FgGreen << ">>> " << clientID << " connected with username: " << username << "\n";
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void UDPServer::OnPlayerConnect(const std::string& clientID, const std::string& username)
+{
+	m_Players[clientID].username = username;
+	m_Players[clientID].connectionStart = time(0);
+	json resp = {
+		{"type", MessageType::MessageType_Connected}
+	};
+}
+
+void UDPServer::SendMsg(const std::string& clientID, const std::string& message)
+{
+	if (m_Players.find(clientID) == m_Players.end())
+	{
+		Out << TextColors::BgRed << ">>> Player not found: " << clientID << "\n";
+		return;
+	}
+	sockaddr_in client;
+	client.sin_family = AF_INET;
+	client.sin_port = htons(m_Players[clientID].port);
+	client.sin_addr.s_addr = inet_addr(clientID.c_str());
+	std::string msg = message;
+	if (sendto(m_ServerSocket, msg.c_str(), msg.size(), 0, (struct sockaddr*)&client, sizeof(client)) == SOCKET_ERROR)
+	{
+		Out << TextColors::BgRed << ">>> sendto failed with error code: " << WSAGetLastError() << "\n";
+	}
 }

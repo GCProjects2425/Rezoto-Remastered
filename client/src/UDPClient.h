@@ -21,6 +21,7 @@ public:
 	bool Connect(const std::string& ip, const std::string& pseudo);
 
 	const std::string& ReceiveMessage();
+	bool SendMsg(const std::string& message);
 private:
 	void Init();
 	void CleanUp();

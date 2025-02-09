@@ -27,6 +27,10 @@ private:
 	void HandleMessages();
 	void ProcessMessage(const std::string& clientID, nlohmann::json content);
 
+	void OnPlayerConnect(const std::string& clientID, const std::string& username);
+
+	void SendMsg(const std::string& clientID, const std::string& message);
+
 	SOCKET m_ServerSocket;
 	std::unordered_map<std::string, Party> m_Parties;
 	std::unordered_map<std::string, Player> m_Players;

@@ -20,7 +20,7 @@ bool UDPClient::Connect(const std::string& ip, const std::string& pseudo)
 	if (m_isConnected)
 		return false;
 
-	m_ClientSocket = socket(AF_INET, SOCK_DGRAM, 0);
+	m_ClientSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	if (m_ClientSocket == INVALID_SOCKET) {
 		std::string message = "Error on socket creation: " + std::to_string(WSAGetLastError());
 		MessageBoxA(NULL, message.c_str(), "UDP ERROR", MB_OK | MB_ICONERROR);
@@ -69,6 +69,21 @@ const std::string& UDPClient::ReceiveMessage()
 	return std::string(buffer, bytesReceived+1);
 }
 
+bool UDPClient::SendMsg(const std::string& message)
+{
+	if (!m_isConnected)
+		return false;
+	const char* msg = message.c_str();
+	int bytesSent = send(m_ClientSocket, msg, strlen(msg), 0);
+	if (bytesSent == SOCKET_ERROR)
+	{
+		std::string message = "Error on send: " + std::to_string(WSAGetLastError());
+		MessageBoxA(NULL, message.c_str(), "UDP ERROR", MB_OK | MB_ICONERROR);
+		return false;
+	}
+	return true;
+}
+
 void UDPClient::Init()
 {
     WSADATA wsaData;
@@ -79,6 +94,7 @@ void UDPClient::Init()
 		MessageBoxA(NULL, message.c_str(), "UDP ERROR", MB_OK | MB_ICONERROR);
 		return;
 	}
+	m_isInitialized = true;
 }
 
 void UDPClient::CleanUp()
