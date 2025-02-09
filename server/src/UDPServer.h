@@ -36,12 +36,15 @@ private:
 	void SendGameUpdate();
 	void SendMsg(const std::string& clientID, const std::string& message);
 
+	void CheckScore();
+
 	SOCKET m_ServerSocket;
 	std::unordered_map<std::string, Party> m_Parties;
 	std::unordered_map<std::string, Player> m_Players;
 	std::string m_LeftPlayer, m_RightPlayer;
 	Pong m_PongGame;
 	std::string m_Paddles[2];
+	int m_LeftScore, m_RightScore;
 	bool m_isRunning;
 	bool m_isGameRunning;
 };

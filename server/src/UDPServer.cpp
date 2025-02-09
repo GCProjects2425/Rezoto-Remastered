@@ -13,6 +13,8 @@ UDPServer::UDPServer()
 	: m_ServerSocket(INVALID_SOCKET)
 	, m_isRunning(false)
 	, m_isGameRunning(false)
+	, m_LeftScore(0)
+	, m_RightScore(0)
 {
 	Init();
 }
@@ -34,6 +36,7 @@ void UDPServer::Run()
 			if (m_isGameRunning)
 			{
 				m_PongGame.Update(dt);
+				CheckScore();
 				SendGameUpdate();
 			}
 			lastFrameTime = now;
@@ -264,4 +267,24 @@ void UDPServer::SendMsg(const std::string& clientID, const std::string& message)
 	{
 		Out << TextColors::BgRed << ">>> sendto failed with error code: " << WSAGetLastError() << "\n";
 	}
+}
+
+void UDPServer::CheckScore()
+{
+	switch (m_PongGame.GetGameState())
+	{
+	case GameState::LeftWins:
+	{
+		++m_LeftScore;
+		break;
+	}
+	case GameState::RightWins:
+	{
+		++m_RightScore;
+		break;
+	}
+	default: return;
+	}
+
+	m_PongGame.Reset();
 }
