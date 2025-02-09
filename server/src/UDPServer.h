@@ -35,6 +35,7 @@ private:
 
 	void SendGameUpdate();
 	void SendMsg(const std::string& clientID, const std::string& message);
+	void SendScore();
 
 	void CheckScore();
 

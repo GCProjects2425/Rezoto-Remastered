@@ -15,4 +15,6 @@ enum MessageType
 	MessageType_Connected,
 	MessageType_StartMovingPaddle,
 	MessageType_StopMovingPaddle,
+
+	MessageType_UpdateScore
 };

@@ -269,6 +269,21 @@ void UDPServer::SendMsg(const std::string& clientID, const std::string& message)
 	}
 }
 
+void UDPServer::SendScore()
+{
+	json msg = {
+		{"type", MessageType::MessageType_UpdateScore},
+		{"data", {
+			{"left", m_LeftScore},
+			{"right", m_RightScore}
+		}}
+	};
+	for (auto& player : m_Players)
+	{
+		SendMsg(player.first, msg.dump());
+	}
+}
+
 void UDPServer::CheckScore()
 {
 	switch (m_PongGame.GetGameState())
