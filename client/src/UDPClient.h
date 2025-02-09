@@ -22,6 +22,8 @@ public:
 
 	const std::string& ReceiveMessage();
 	bool SendMsg(const std::string& message);
+
+	bool IsConnected() const { return m_isConnected; }
 private:
 	void Init();
 	void CleanUp();
