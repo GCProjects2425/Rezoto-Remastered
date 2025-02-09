@@ -27,6 +27,7 @@ private:
 	void CleanUp();
 
 	SOCKET m_ClientSocket;
+	sockaddr_in m_ServerAddr;
 	bool m_isInitialized;
 	bool m_isConnected;
 };

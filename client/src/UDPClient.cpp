@@ -28,12 +28,11 @@ bool UDPClient::Connect(const std::string& ip, const std::string& pseudo)
 		return false;
 	}
 
-	sockaddr_in server;
-	server.sin_family = AF_INET;
-	server.sin_port = htons(SERVER_PORT);
-	server.sin_addr.s_addr = inet_addr(ip.c_str());
+	m_ServerAddr.sin_family = AF_INET;
+	m_ServerAddr.sin_port = htons(SERVER_PORT);
+	m_ServerAddr.sin_addr.s_addr = inet_addr(ip.c_str());
 
-	if (connect(m_ClientSocket, (struct sockaddr*)&server, sizeof(server)) == SOCKET_ERROR)
+	if (connect(m_ClientSocket, (struct sockaddr*)&m_ServerAddr, sizeof(m_ServerAddr)) == SOCKET_ERROR)
 	{
 		std::string message = "Error on connect: " + std::to_string(WSAGetLastError());
 		MessageBoxA(NULL, message.c_str(), "UDP ERROR", MB_OK | MB_ICONERROR);
@@ -49,7 +48,8 @@ bool UDPClient::Connect(const std::string& ip, const std::string& pseudo)
 const std::string& UDPClient::ReceiveMessage()
 {
 	char buffer[1025];
-	int bytesReceived = recv(m_ClientSocket, buffer, 1024, 0);
+	int sLen = sizeof(sockaddr_in);
+	int bytesReceived = recvfrom(m_ClientSocket, buffer, 1024, 0, (sockaddr*)&m_ServerAddr, &sLen);
 	if (bytesReceived == SOCKET_ERROR) {
 		int error = WSAGetLastError();
 		if (error == WSAECONNRESET || error == WSAECONNABORTED)
@@ -58,7 +58,7 @@ const std::string& UDPClient::ReceiveMessage()
 			CleanUp();
 		}
 		if (error != WSAEWOULDBLOCK) {
-			std::string message = "Error on recv: " + std::to_string(error);
+			std::string message = "Error on recvfrom: " + std::to_string(error);
 			MessageBoxA(NULL, message.c_str(), "UDP ERROR", MB_OK | MB_ICONERROR);
 		}
 
@@ -74,7 +74,7 @@ bool UDPClient::SendMsg(const std::string& message)
 	if (!m_isConnected)
 		return false;
 	const char* msg = message.c_str();
-	int bytesSent = send(m_ClientSocket, msg, strlen(msg), 0);
+	int bytesSent = send(m_ClientSocket, msg, strlen(msg), 0, (sockaddr*)&m_ServerAddr, sizeof(sockaddr_in));
 	if (bytesSent == SOCKET_ERROR)
 	{
 		std::string message = "Error on send: " + std::to_string(WSAGetLastError());

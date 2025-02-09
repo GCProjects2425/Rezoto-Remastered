@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game\Enums.h" />
     <ClInclude Include="src\nlohmann\json.hpp" />
     <ClInclude Include="src\Utils\Singleton.h" />
     <ClInclude Include="src\Game\Pong.h" />
