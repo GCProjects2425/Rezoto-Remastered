@@ -27,7 +27,7 @@ void UDPServer::Init()
 
 	int result = WSAStartup(MAKEWORD(2, 2), &wsa);
 	if (result != 0)
-		Out << TextColors::BgRed << ">>> WSAStartup failed: " << std::to_string(result) << "\n";
+		Out << TextColors::BgRed << ">>> WSAStartup failed: " << WSAGetLastError() << "\n";
 
 	Launch();
 }
@@ -38,7 +38,7 @@ void UDPServer::Launch()
 	int addrLength = sizeof(server);
 
 	if ((m_ServerSocket = socket(AF_INET, SOCK_DGRAM, 0)) == INVALID_SOCKET) {
-		Out << TextColors::BgRed << ">>> Could not create socket: " + WSAGetLastError() << "\n";
+		Out << TextColors::BgRed << ">>> Could not create socket: " << WSAGetLastError() << "\n";
 		return;
 	}
 
@@ -47,7 +47,7 @@ void UDPServer::Launch()
 	server.sin_port = htons(PORT);
 
 	if (bind(m_ServerSocket, (struct sockaddr*)&server, sizeof(server)) == SOCKET_ERROR) {
-		Out << TextColors::BgRed << ">>> Bind failed with error code: " + WSAGetLastError() << "\n";
+		Out << TextColors::BgRed << ">>> Bind failed with error code: " << WSAGetLastError() << "\n";
 		return;
 	}
 
@@ -83,7 +83,7 @@ void UDPServer::HandleMessages()
 
 	json recvbufJson;
 	try {
-		recvbufJson = json::parse(std::string(buffer, bytesReceived));
+		recvbufJson = json::parse(std::string(buffer, bytesReceived+1));
 	}
 	catch (const json::parse_error& e) {
 		Out << TextColors::BgRed << ">>> JSON parse error: " << e.what() << "\n";

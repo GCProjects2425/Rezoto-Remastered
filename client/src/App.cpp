@@ -12,7 +12,13 @@ App::App()
 	, m_LeftScore(0), m_RightScore(0)
 	, m_Timer()
 	, CurrentScene(nullptr)
-{ }
+{
+	m_Window.setFramerateLimit(60);
+	m_Music.setLooping(true);
+	m_Music.play();
+
+	m_ClientServer = std::make_unique<UDPClient>();
+}
 
 int App::Run()
 {

@@ -7,6 +7,8 @@
 #include "PongScene.h"
 #include "Utils/Singleton.h"
 
+#include "UDPClient.h"
+
 class JoinRoomScene;
 class App : public Singleton<App>
 {
@@ -19,7 +21,6 @@ public:
 	PongScene* pongScene;
 	JoinRoomScene* joinRoomScene;
 
-
 private:
 
 	void PollEvents();
@@ -27,9 +28,6 @@ private:
 	void Display();
 
 	Scene* CurrentScene;
-
-
-private:
 
 	sf::RenderWindow m_Window;
 	sf::Font m_Font;
@@ -40,4 +38,6 @@ private:
 	unsigned m_LeftScore, m_RightScore;
 
 	Timer m_Timer;
+
+	std::unique_ptr<UDPClient> m_ClientServer;
 };
