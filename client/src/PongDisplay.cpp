@@ -22,7 +22,7 @@ void PongDisplay::Update(nlohmann::json data)
 {
 	m_Ball.setPosition({ data["ball"]["x"],data["ball"]["y"] });
 	m_LeftPaddle.setPosition({0.f,data["paddleLeft"]});
-	m_RightPaddle.setPosition({GameSizeX - PaddleDistFromBorders, data["rightPaddle"] });
+	m_RightPaddle.setPosition({GameSizeX - PaddleDistFromBorders, data["paddleRight"] });
 }
 
 void PongDisplay::Draw(sf::RenderTarget& target) const
