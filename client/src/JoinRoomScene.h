@@ -26,55 +26,10 @@ public:
 
     JoinRoomScene();
 
-    void Draw(sf::RenderWindow& window) override {
-        window.draw(m_UsernameLabel);
-        window.draw(m_UsernameInput);
-        window.draw(m_IpLabel);
-        window.draw(m_IpInput);
-        window.draw(m_ErrorMessage);
-    }
-
+    void Draw(sf::RenderWindow& window) override;
     void Update(float dt) override {}
+    void Start() override;
+    void HandleInput(sf::RenderWindow& window) override;
 
-    void Start() override {}
-
-    void HandleInput(sf::RenderWindow& window) override {
-        while (const std::optional event = window.pollEvent()) {
-            if ((event->is<sf::Event::Closed>()))
-                window.close();
-            else if (const auto* keyPressed = event->getIf<sf::Event::TextEntered>()) {
-                if (m_IsTypingUsername) {
-                    if (keyPressed->unicode == 8 && !m_Username.empty()) 
-                        m_Username.pop_back();
-                    else if (keyPressed->unicode >= 32 && keyPressed->unicode <= 126)
-                        m_Username += static_cast<char>(keyPressed->unicode);
-                    m_UsernameInput.setString(m_Username);
-                }
-                else {
-                    if (keyPressed->unicode == 8 && !m_Ip.empty())
-                        m_Ip.pop_back();
-                    else if (keyPressed->unicode >= 32 && keyPressed->unicode <= 126)
-                        m_Ip += static_cast<char>(keyPressed->unicode);
-                    m_IpInput.setString(m_Ip);
-                }
-            }
-            else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
-                if (keyPressed->code == sf::Keyboard::Key::Tab) {
-                    m_IsTypingUsername = !m_IsTypingUsername;
-                }
-                else if (keyPressed->code == sf::Keyboard::Key::Enter) {
-                    if (!IsValidUsername(m_Username)) {
-                        m_ErrorMessage.setString("Username must be at least 2 characters");
-                    }
-                    else if (!IsValidIp(m_Ip)) {
-                        m_ErrorMessage.setString("Invalid IP address");
-                    }
-                    else {
-                        m_ErrorMessage.setString("Connecting...");
-                        App::GetInstance()->SetScene(App::GetInstance()->pongScene);
-                    }
-                }
-            }
-        }
-    }
+    void SwapField();
 };

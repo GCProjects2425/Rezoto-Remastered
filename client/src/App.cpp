@@ -14,10 +14,10 @@ App::App()
 	, CurrentScene(nullptr)
 {
 	m_Window.setFramerateLimit(60);
-	m_Music.setLooping(true);
-	m_Music.setVolume(50.f);
-	m_Music.setPitch(2.f); // LOL
-	m_Music.play();
+	//m_Music.setLooping(true);
+	//m_Music.setVolume(50.f);
+	//m_Music.setPitch(2.f); // LOL
+	//m_Music.play();
 
 	m_ClientServer = std::make_unique<UDPClient>();
 }

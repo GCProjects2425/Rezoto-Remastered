@@ -32,3 +32,72 @@ JoinRoomScene::JoinRoomScene()
     m_ErrorMessage.setCharacterSize(24);
     m_ErrorMessage.setFillColor(sf::Color::Red);
 }
+
+void JoinRoomScene::Draw(sf::RenderWindow& window) 
+{
+    window.draw(m_UsernameLabel);
+    window.draw(m_UsernameInput);
+    window.draw(m_IpLabel);
+    window.draw(m_IpInput);
+    window.draw(m_ErrorMessage);
+}
+
+void JoinRoomScene::Start() 
+{
+    m_UsernameLabel.setFillColor(sf::Color::White);
+    m_IpLabel.setFillColor(sf::Color::Color(58, 58, 58));
+}
+
+void JoinRoomScene::HandleInput(sf::RenderWindow& window) 
+{
+    while (const std::optional event = window.pollEvent()) {
+        if ((event->is<sf::Event::Closed>()))
+            window.close();
+        else if (const auto* keyPressed = event->getIf<sf::Event::TextEntered>()) {
+            if (m_IsTypingUsername) {
+                if (keyPressed->unicode == 8 && !m_Username.empty())
+                    m_Username.pop_back();
+                else if (keyPressed->unicode >= 32 && keyPressed->unicode <= 126)
+                    m_Username += static_cast<char>(keyPressed->unicode);
+                m_UsernameInput.setString(m_Username);
+            }
+            else {
+                if (keyPressed->unicode == 8 && !m_Ip.empty())
+                    m_Ip.pop_back();
+                else if (keyPressed->unicode >= 32 && keyPressed->unicode <= 126)
+                    m_Ip += static_cast<char>(keyPressed->unicode);
+                m_IpInput.setString(m_Ip);
+            }
+        }
+        else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
+            if (keyPressed->code == sf::Keyboard::Key::Tab) {
+                SwapField();
+            }
+            else if (keyPressed->code == sf::Keyboard::Key::Enter) {
+                if (!IsValidUsername(m_Username)) {
+                    m_ErrorMessage.setString("Username must be at least 2 characters");
+                }
+                else if (!IsValidIp(m_Ip)) {
+                    m_ErrorMessage.setString("Invalid IP address");
+                }
+                else {
+                    m_ErrorMessage.setString("Connecting...");
+                    App::GetInstance()->SetScene(App::GetInstance()->pongScene);
+                }
+            }
+        }
+    }
+}
+
+void JoinRoomScene::SwapField()
+{
+    m_IsTypingUsername = !m_IsTypingUsername;
+    if (m_IsTypingUsername) {
+        m_UsernameLabel.setFillColor(sf::Color::White);
+        m_IpLabel.setFillColor(sf::Color::Color(58, 58, 58));
+    }
+    else {
+        m_UsernameLabel.setFillColor(sf::Color::Color(58, 58, 58));
+        m_IpLabel.setFillColor(sf::Color::White);
+    }
+}
