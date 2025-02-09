@@ -98,6 +98,9 @@ void App::ProcessMessages()
 		case MessageType::MessageType_Start:
 			joinRoomScene->OnStartMessage();
 			break;
+		case MessageType::MessageType_UpdateScore:
+			pongScene->OnScoreMessage(msg["data"]);
+			break;
 		default:
 			break;
 		}

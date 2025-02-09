@@ -22,5 +22,6 @@ public:
 	void HandleInput(sf::RenderWindow& window) override;
 
 	void OnUpdateMessage(nlohmann::json data);
+	void OnScoreMessage(nlohmann::json data);
 };
 
