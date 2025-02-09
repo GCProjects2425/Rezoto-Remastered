@@ -94,38 +94,39 @@ void PongScene::HandleInput(sf::RenderWindow& window)
 				break;
 			}
 			}
+		}
 
-			if (auto* keyEvent = event->getIf<sf::Event::KeyReleased>())
+		if (auto* keyEvent = event->getIf<sf::Event::KeyReleased>())
+		{
+			using enum sf::Keyboard::Key;
+			using enum PaddlesBehaviour;
+			switch (keyEvent->code)
 			{
-				using enum sf::Keyboard::Key;
-				using enum PaddlesBehaviour;
-				switch (keyEvent->code)
-				{
-				case W:
-				case Z:
-				case Up:
-				{
-					nlohmann::json msg = {
-						{"type", MessageType::MessageType_StopMovingPaddle},
-						{"data", { {"Paddle", "UP"}}}
-					};
-					UDPClient::GetInstance()->SendMsg(msg.dump());
-					break;
-				}
-				case Down:
-				case S:
-				{
-					nlohmann::json msg = {
-						{"type", MessageType::MessageType_StopMovingPaddle},
-						{"data", { {"Paddle", "DOWN"}}}
-					};
-					UDPClient::GetInstance()->SendMsg(msg.dump());
-					break;
-				}
-				}
+			case W:
+			case Z:
+			case Up:
+			{
+				nlohmann::json msg = {
+					{"type", MessageType::MessageType_StopMovingPaddle},
+					{"data", { {"Paddle", "UP"}}}
+				};
+				UDPClient::GetInstance()->SendMsg(msg.dump());
+				break;
+			}
+			case Down:
+			case S:
+			{
+				nlohmann::json msg = {
+					{"type", MessageType::MessageType_StopMovingPaddle},
+					{"data", { {"Paddle", "DOWN"}}}
+				};
+				UDPClient::GetInstance()->SendMsg(msg.dump());
+				break;
+			}
 			}
 		}
 	}
+
 }
 
 void PongScene::OnUpdateMessage(nlohmann::json data)
@@ -160,9 +161,9 @@ void PongScene::OnUpdateMessage(nlohmann::json data)
 
 
 PongScene::PongScene()
-	: 
+	:
 	m_Font("./res/fonts/JuliaMono-Regular.ttf"),
-	m_PongGame(), 
+	m_PongGame(),
 	m_PongDisplay(m_Font)
 	, m_LeftScore(0), m_RightScore(0)
 	, m_isRunning(false)
