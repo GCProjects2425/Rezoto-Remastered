@@ -6,8 +6,8 @@
 
 inline constexpr float BallStartMaxAngle = std::numbers::pi_v<float> / 5.f;
 inline constexpr float BallBounceMaxAngle = std::numbers::pi_v<float> / 4.f;
-inline constexpr float BallStartSpeed = 400.f;
-inline constexpr float PaddleSpeed = 200.f;
+inline constexpr float BallStartSpeed = 800.f;
+inline constexpr float PaddleSpeed = 400.f;
 
 void Pong::Reset()
 {
