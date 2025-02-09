@@ -1,4 +1,6 @@
 #include "PongScene.h"
+#include <nlohmann/json.hpp>
+#include <Game/Enums.h>
 
 void PongScene::Draw(sf::RenderWindow& window)
 {
@@ -72,39 +74,55 @@ void PongScene::HandleInput(sf::RenderWindow& window)
 			{
 			case W:
 			case Z:
-				m_PongGame.Behaviours |= LeftUp;
-				break;
-			case S:
-				m_PongGame.Behaviours |= LeftDown;
-				break;
 			case Up:
-				m_PongGame.Behaviours |= RightUp;
-				break;
-			case Down:
-				m_PongGame.Behaviours |= RightDown;
+			{
+				nlohmann::json msg = {
+					{"type", MessageType::MessageType_StartMovingPaddle},
+					{"data", { {"Paddle", "UP"}}}
+				};
+				UDPClient::GetInstance()->SendMsg(msg.dump());
 				break;
 			}
-		}
-
-		if (auto* keyEvent = event->getIf<sf::Event::KeyReleased>())
-		{
-			using enum sf::Keyboard::Key;
-			using enum PaddlesBehaviour;
-			switch (keyEvent->code)
-			{
-			case W:
-			case Z:
-				m_PongGame.Behaviours &= ~LeftUp;
-				break;
-			case S:
-				m_PongGame.Behaviours &= ~LeftDown;
-				break;
-			case Up:
-				m_PongGame.Behaviours &= ~RightUp;
-				break;
 			case Down:
-				m_PongGame.Behaviours &= ~RightDown;
+			case S:
+			{
+				nlohmann::json msg = {
+					{"type", MessageType::MessageType_StartMovingPaddle},
+					{"data", { {"Paddle", "DOWN"}}}
+				};
+				UDPClient::GetInstance()->SendMsg(msg.dump());
 				break;
+			}
+			}
+
+			if (auto* keyEvent = event->getIf<sf::Event::KeyReleased>())
+			{
+				using enum sf::Keyboard::Key;
+				using enum PaddlesBehaviour;
+				switch (keyEvent->code)
+				{
+				case W:
+				case Z:
+				case Up:
+				{
+					nlohmann::json msg = {
+						{"type", MessageType::MessageType_StopMovingPaddle},
+						{"data", { {"Paddle", "UP"}}}
+					};
+					UDPClient::GetInstance()->SendMsg(msg.dump());
+					break;
+				}
+				case Down:
+				case S:
+				{
+					nlohmann::json msg = {
+						{"type", MessageType::MessageType_StopMovingPaddle},
+						{"data", { {"Paddle", "DOWN"}}}
+					};
+					UDPClient::GetInstance()->SendMsg(msg.dump());
+					break;
+				}
+				}
 			}
 		}
 	}

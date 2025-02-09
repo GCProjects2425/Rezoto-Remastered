@@ -12,5 +12,7 @@ enum MessageType
 	MessageType_Update,
 
 	// Confirmations
-	MessageType_Connected
+	MessageType_Connected,
+	MessageType_StartMovingPaddle,
+	MessageType_StopMovingPaddle,
 };
