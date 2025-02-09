@@ -18,7 +18,7 @@ PongDisplay::PongDisplay(sf::Font& font)
 	m_leftUsername.setPosition({ GameSizeX / 4.f, GameSizeY / 2.f -50 });
 
 	m_rightUsername.setFillColor(sf::Color(0xFFFFFF66));
-	m_rightUsername.setPosition({ GameSizeX / 0.5, GameSizeY / 2.f - 50 });
+	m_rightUsername.setPosition({  GameSizeX -  (GameSizeX / 4.f), GameSizeY / 2.f - 50 });
 }
 
 void PongDisplay::SetScore(unsigned left, unsigned right)
