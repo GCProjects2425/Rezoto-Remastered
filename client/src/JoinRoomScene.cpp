@@ -91,6 +91,13 @@ void JoinRoomScene::HandleInput(sf::RenderWindow& window)
                     //m_ErrorMessage.setString("Connecting...");
                     //App::GetInstance()->SetScene(App::GetInstance()->pongScene);
                     ChangeConnectionStatus(Connecting);
+                    if (UDPClient::GetInstance()->Connect(m_Ip, m_Username)) {
+                        m_ErrorMessage.setString("Error while connecting");
+                        ChangeConnectionStatus(None);
+                    }
+                    else {
+                        ChangeConnectionStatus(WaitingForPlayer);
+                    }
                 }
             }
         }
@@ -114,6 +121,9 @@ void JoinRoomScene::ChangeConnectionStatus(ConnectionStatus status)
 {
     switch (status)
     {
+    case None:
+        m_ConnectionStatus.setString("");
+        break;
     case Connecting:
         m_ConnectionStatus.setFillColor(sf::Color::Color(152, 251, 152));
         m_ConnectionStatus.setString("Connecting to the server ...");

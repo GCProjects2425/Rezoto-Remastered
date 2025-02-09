@@ -121,6 +121,8 @@ void Pong::Update(float dt)
 			float penetrationDepth = BallRadius - length;
 			BallX += normX * penetrationDepth;
 			BallY += normY * penetrationDepth;
+
+			//Send ballBounceMessage (BallDx, BallDy)
 		}
 	}
 }

@@ -4,7 +4,9 @@
 #include <regex>
 #include <iostream>
 #include "App.h"
+#include "UDPClient.h"
 enum ConnectionStatus {
+    None,
     Connecting,
     WaitingForPlayer
 };
